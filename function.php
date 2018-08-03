@@ -82,3 +82,38 @@ function p($data)
     $str .= '</pre>';
     echo $str;
 }
+
+$sort_array = array(
+    "array1" => array(
+        'word' => 'test1',
+        'sortnumber' => 1,
+    ),
+    "array3" => array(
+        'word' => 'test4',
+        'sortnumber' => 4,
+    ),
+    "array2" => array(
+        'word' => 'test3',
+        'sortnumber' => 3,
+    ),
+    "array5" => array(
+        'word' => 'test5',
+    ),
+    "array4" => array(
+        'word' => 'test2',
+        'sortnumber' => 2,
+    ),
+);
+
+// 自定义排序函数
+function my_sort($a, $b){
+    $prev = isset($a['sortnumber']) ? $a['sortnumber'] : 0;
+    $next = isset($b['sortnumber']) ? $b['sortnumber'] : 0;
+    if($prev == $next) return 0;
+    return ($prev<$next) ? -1 : 1;
+}
+echo '<pre>排序前:<br>';
+print_r($sort_array);
+uasort($sort_array, "my_sort");
+echo '<pre>排序后:<br>';
+print_r($sort_array);
