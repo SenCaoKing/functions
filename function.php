@@ -110,9 +110,6 @@ function get_rand_number($start=1, $end=10, $length=4){
     return $data;
 }
 
-$str = 'abcde';
-p(str_split($str));
-
 /**
  * 将字符串分割为数组
  * @param  string $str 字符串
@@ -122,5 +119,12 @@ function mb_str_split($str){
     return preg_split('/(?<!^)(?!$)/u', $str);
 }
 
-$str = '我是中国人';
-p(mb_str_split($str));
+function is_email($email){
+    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+        return true;
+    }else{
+        return false;
+    }
+}
+p(is_email('123456789@qq.com')); // true
+p(is_email('baidu.com'));        // false
