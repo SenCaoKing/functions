@@ -109,3 +109,18 @@ function get_rand_number($start=1, $end=10, $length=4){
     sort($data);
     return $data;
 }
+
+$str = 'abcde';
+p(str_split($str));
+
+/**
+ * 将字符串分割为数组
+ * @param  string $str 字符串
+ * @return array       分割得到的数组
+ */
+function mb_str_split($str){
+    return preg_split('/(?<!^)(?!$)/u', $str);
+}
+
+$str = '我是中国人';
+p(mb_str_split($str));
