@@ -119,6 +119,11 @@ function mb_str_split($str){
     return preg_split('/(?<!^)(?!$)/u', $str);
 }
 
+/**
+ * 验证是否是邮箱
+ * @param  string $email 邮箱
+ * @return bool          是否是邮箱
+ */
 function is_email($email){
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         return true;
@@ -126,5 +131,19 @@ function is_email($email){
         return false;
     }
 }
-p(is_email('123456789@qq.com')); // true
-p(is_email('baidu.com'));        // false
+
+/**
+ * 验证是否是url
+ * @param  string $url url
+ * @return bool        是否是url
+ */
+function is_url($url){
+    if(filter_var($url, FILTER_VALIDATE_URL)){
+        return true;
+    }else{
+        return false;
+    }
+}
+p(is_url('http://baidu.com'));  // true
+p(is_url('https://baidu.com')); // true
+p(is_url('baidu.com'));         // false
