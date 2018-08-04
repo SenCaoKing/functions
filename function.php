@@ -158,108 +158,59 @@ function is_ip($ip){
     }
 }
 
-// 解析array_merge函数的用法
-
 /**
- * ① 如果数组中有相同的 字符串 键名
- * 则该键名后面的值覆盖前面的值；
- * 如果想让前面的值覆盖后面的值，则可以使用 + 号
+ * strpos的正确使用方式
+ * ① 如果用strpos来判断字符串中是否存在某个字符时，必须使用 ===false
+ * ② strpos的第二个参数必须是字符串型的；因此，如果在循环或其他情况下调用的strpos函数，而且不确定第二个参数的类型，保险的方式是用 strval 把它转字符串类型
  */
-$a = array(
-    'a' => 'first a',
-    'b' => 'b'
-);
-$b = array(
-    'c' => 'c',
-    'a' => 'second a'
-);
-$result = array_merge($a, $b);
-p($result);
-/*
-Array
-(
-    [a] => second a
-    [b] => b
-    [c] => c
-)
-*/
+// ①
+// 判断'我是中国人'中是否存在'中国人'这个词
+if(strpos('我是中国人', '中国人')) {
+    // 如果存在执行此处代码
+    echo '存在';
+}else{
+    // 如果不存在执行此处代码
+    echo '不存在';
+} // 存在
 
-$result = $a + $b;
-p($result);
-/*
-Array
-(
-    [a] => first a
-    [b] => b
-    [c] => c
-)
-*/
+// 判断'我是中国人'中是否存在'我'这个词
+if(strpos('我是中国人', '我')) {
+    // 如果存在执行此处代码
+    echo '存在';
+}else{
+    // 如果不存在执行此处代码
+    echo '不存在';
+} // 不存在
 
-/**
- * ② 如果数组中有相同的 数字 键名，则格式化键名并保留全部的值
- */
-$a = array(
-    0 => 'zero_a',
-    2 => 'two_a',
-    3 => 'three_a'
-);
-$b = array(
-    1 => 'one_b',
-    3 => 'three_b',
-    4 => 'four_b'
-);
-$result = array_merge($a, $b);
-p($result);
-/*
-Array
-(
-    [0] => zero_a
-    [1] => two_a
-    [2] => three_a
-    [3] => one_b
-    [4] => three_b
-    [5] => four_b
-)
-*/
+// 判断'我是中国人'中是否存在'中国人'这个词
+if(strpos('我是中国人', '中国人') === false) {
+    // 如果不存在执行此处代码
+    echo '不存在';
+}else{
+    // 如果存在执行此处代码
+    echo '存在';
+} // 存在
 
-/**
- * ③ 如果只传入一个数组，并且键名是数字，则格式化键名
- */
-$a = array(
-    1 => 1,
-    3 => 3,
-    6 => 6
-);
-$result = array_merge($a);
-p($result);
-/*
-Array
-(
-    [0] => 1
-    [1] => 3
-    [2] => 6
-)
-*/
+// ②
+// 判断'我是中国人1'中是否存在'1'这个数字
+if(strpos('我是中国人1', 1) === false) {
+    // 如果不存在执行此处代码
+    echo '不存在';
+}else{
+    // 如果存在执行此处代码
+    echo '存在';
+} // 不存在
 
-/**
- * ④ 如果传入的参数中有一个不是数组，则返回 null(略坑)
- * 解决方法：在不确定需要array_merge的数组是否有空值的时候，直接使用(array)强制转数组
- */
-$a = array(
-    1 => 1,
-    6 => 6
-);
-$b = '';
-$result = array_merge($a, $b);
-p($result); // null
+// 判断'我是中国人1'中是否存在'1'这个数字
+$haystack = '我是中国人1';
+$needle = 1;
+if (strpos($haystack, strval($needle)) === false) {
+    // 如果不存在执行此处代码
+    echo '不存在';
+}else{
+    // 如果存在执行此处代码
+    echo '存在';
+} // 存在
 
-$result = array_merge((array)$a, (array)$b);
-p($result);
-/*
-Array
-(
-    [0] => 1
-    [1] => 6
-    [2] =>
-)
-*/
+
+
