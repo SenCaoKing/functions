@@ -144,6 +144,18 @@ function is_url($url){
         return false;
     }
 }
-p(is_url('http://baidu.com'));  // true
-p(is_url('https://baidu.com')); // true
-p(is_url('baidu.com'));         // false
+
+/**
+ * 验证是否是ip
+ * @param  string $ip ip
+ * @return bool       是否是ip
+ */
+function is_ip($ip){
+    if(filter_var($ip, FILTER_VALIDATE_IP)){
+        return true;
+    }else{
+        return false;
+    }
+}
+p(is_ip('255.255.255.255')); // true
+p(is_ip('123.456.789.000')); // false
