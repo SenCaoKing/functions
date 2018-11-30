@@ -159,58 +159,24 @@ function is_ip($ip){
 }
 
 /**
- * strpos的正确使用方式
- * ① 如果用strpos来判断字符串中是否存在某个字符时，必须使用 ===false
- * ② strpos的第二个参数必须是字符串型的；因此，如果在循环或其他情况下调用的strpos函数，而且不确定第二个参数的类型，保险的方式是用 strval 把它转字符串类型
+ * 获取文件夹文件列表
+ * @param $filename 路径
+ * @return array    文件列表
  */
-// ①
-// 判断'我是中国人'中是否存在'中国人'这个词
-if(strpos('我是中国人', '中国人')) {
-    // 如果存在执行此处代码
-    echo '存在';
-}else{
-    // 如果不存在执行此处代码
-    echo '不存在';
-} // 存在
-
-// 判断'我是中国人'中是否存在'我'这个词
-if(strpos('我是中国人', '我')) {
-    // 如果存在执行此处代码
-    echo '存在';
-}else{
-    // 如果不存在执行此处代码
-    echo '不存在';
-} // 不存在
-
-// 判断'我是中国人'中是否存在'中国人'这个词
-if(strpos('我是中国人', '中国人') === false) {
-    // 如果不存在执行此处代码
-    echo '不存在';
-}else{
-    // 如果存在执行此处代码
-    echo '存在';
-} // 存在
-
-// ②
-// 判断'我是中国人1'中是否存在'1'这个数字
-if(strpos('我是中国人1', 1) === false) {
-    // 如果不存在执行此处代码
-    echo '不存在';
-}else{
-    // 如果存在执行此处代码
-    echo '存在';
-} // 不存在
-
-// 判断'我是中国人1'中是否存在'1'这个数字
-$haystack = '我是中国人1';
-$needle = 1;
-if (strpos($haystack, strval($needle)) === false) {
-    // 如果不存在执行此处代码
-    echo '不存在';
-}else{
-    // 如果存在执行此处代码
-    echo '存在';
-} // 存在
-
-
-
+function getTplList($filename){
+    $tplDir = realpath($filename);
+    if(!is_dir($tplDir)){
+        return false;
+    }
+    $listFile = scandir($tplDir);
+    if(is_array($listFile)){
+        $list = array();
+        foreach($listFile as $key => $value){
+            if($value != "." && $value != ".."){
+                $list[$key]['file'] = $value;
+                $list[$key]['name'] = substr($value, 0, -5);
+            }
+        }
+    }
+    return $list;
+}
