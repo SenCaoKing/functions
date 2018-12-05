@@ -163,7 +163,7 @@ function is_ip($ip){
  * @param $filename 路径
  * @return array    文件列表
  */
-function getTplList($filename){
+function getFileList($filename){
     $tplDir = realpath($filename);
     if(!is_dir($tplDir)){
         return false;
@@ -179,4 +179,24 @@ function getTplList($filename){
         }
     }
     return $list;
+}
+
+/**
+ * 获取字符串中数字部分
+ * @param string $str 字符串
+ * @return string
+ */
+function findNum($str=''){
+    $str = trim($str);
+    if(empty($str))
+        return '';
+
+    $res = '';
+    $length = strlen($str);
+    for($i=0; $i<$length; $i++){
+        if(is_numeric($str[$i])){
+            $res .= $str[$i];
+        }
+    }
+    return $res;
 }
