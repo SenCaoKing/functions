@@ -146,6 +146,35 @@ function is_url($url){
 }
 
 /**
+ * 获取客户端IP
+ * @return array|false|null|string
+ */
+function get_client_ip(){
+    static $ip;
+    if($ip == null){
+        if(isset($_SERVER)){
+            if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }elseif(isset($_SERVER['HTTP_CLIENT_IP'])){
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            }else{
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+        }else{
+            // 不允许就使用getenv获取
+            if(getenv("HTTP_X_FORWARDED_FOR")){
+                $ip = getenv("HTTP_X_FORWARDED_FOR");
+            }elseif(getenv("HTTP_CLIENT_IP")){
+                $ip = getenv("HTTP_CLIENT_IP");
+            }else{
+                $ip = getenv("REMOTE_ADDR");
+            }
+        }
+    }
+    return $ip;
+}
+
+/**
  * 验证是否是ip
  * @param  string $ip ip
  * @return bool       是否是ip
