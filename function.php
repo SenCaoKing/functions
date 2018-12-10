@@ -229,3 +229,71 @@ function findNum($str=''){
     }
     return $res;
 }
+
+/**
+ * UUID含义是 通用唯一识别码 (Universally Unique Identifier)，这是一个软件建构的标准，也是被开源软件基金会 (Open Software Foundation，OSF) 的组织应用在分布式计算环境 (Distributed Computing Environment，DCE) 领域的一部分。
+ *
+ * UUID 的目的，是让分布式系统中的所有元素，都能有唯一的辨识资讯，而不需要透过中央控制端来做辨识资讯的指定。如此一来，每个人都可以建立不与其他人冲突的 UUID。在这样的情况下，就不需要考虑数据库建立时的名称重复问题。目前最广泛应用的 UUID，即是微软的 Microsoft's Globally Unique Identifiers(GUIDs)，而其它重要的应用，则有 Linux ext2/ext3 档案系统、LUKS 加密分割区、GNOME、KDE、Mac OS X 等等。
+ *
+ * UUID 是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。通常平台会提供生成的 API。按照开放软件基金会 (OSF) 制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字
+ * UUID 有以下几部分的组合：
+ * ① 当前日期和时间，UUID 的第一个部分与时间有关，如果你在生成一个 UUID 之后，过几秒又生成一个 UUID，则第一个部分不同，其余相同。
+ * ② 时钟序列。
+ * ③ 全局唯一的 IEEE 机器识别号，如果有网卡，从网卡MAC地址获得，没有网卡以其他方式获得。
+ *
+ * UUID 的唯一缺陷在于生成的结果串会比较长。关于 UUID 这个标准使用最普遍的是微软的 GUID(Globals Unique Identifiers)。在 ColdFusion 中可以用 CreateUUID() 函数很简单地生成 UUID，其格式未：xxxxxxxx-xxxx- xxxx-xxxxxxxxxxxxxxxx(8-4-4-16)，其中每个 x 是 0-9 或 a-f 范围内的一个十六进制的数字。而标准的 UUID 格式为：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx(8-4-4-4-12)，可以从 cflib 下载 CreateGUID() UDF 进行转换。
+ */
+// 第一种方式:
+function create_guid(){
+    $microTime = microtime();
+    list($a_dec, $a_sec) = explode(" ", $microTime);
+    $dec_hex = dechex($a_dec * 1000000);
+    $sec_hex = dechex($a_sec);
+    ensure_length($dec_hex, 5);
+    ensure_length($sec_hex, 6);
+    $guid = "";
+    $guid .= $dec_hex;
+    $guid .= create_guid_section(3);
+    $guid .= '-';
+    $guid .= create_guid_section(4);
+    $guid .= '-';
+    $guid .= create_guid_section(4);
+    $guid .= '-';
+    $guid .= create_guid_section(4);
+    $guid .= '-';
+    $guid .= $sec_hex;
+    $guid .= create_guid_section(6);
+    return $guid;
+}
+
+function ensure_length(&$string, $length){
+    $strlen = strlen($string);
+    if($strlen < $length){
+        $string = str_pad($string, $length, "0");
+    }elseif ($strlen > $length){
+        $string = substr($string, 0, $length);
+    }
+}
+
+function create_guid_section($characters){
+    $return = "";
+    for($i=0; $i<$characters; $i++){
+        $return .= dechex(mt_rand(0, 15));
+    }
+    return $return;
+}
+
+// 第二种方式：
+/**
+ * @param string $prefix 前缀
+ * @return string
+ */
+function create_uuid($prefix=""){
+    $str = md5(uniqid(mt_rand(), true));
+    $uuid = substr($str, 0, 8) . '-';
+    $uuid .= substr($str, 8, 4) . '-';
+    $uuid .= substr($str, 12, 4) . '-';
+    $uuid .= substr($str, 16, 4) . '-';
+    $uuid .= substr($str, 20, 12);
+    return $prefix . $uuid;
+}
